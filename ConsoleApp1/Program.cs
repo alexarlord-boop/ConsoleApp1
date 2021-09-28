@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +13,8 @@ namespace ConsoleApp1
         private readonly string _outPath;
         string Text = "";
         string Result = "";
-        private Dictionary<string, int> _dict = new Dictionary<string, int>();
+        private readonly Dictionary<string, int> _dict = new Dictionary<string, int>();
         
-
         public UsageCounter(string inPathArg, string outPathArg)
         {
             _onPath = inPathArg;
@@ -25,7 +24,6 @@ namespace ConsoleApp1
         
         public void ReadFile()
         {
-            
             try
             {
                 using FileStream stream = File.Open(this._onPath, FileMode.Open);
@@ -34,19 +32,14 @@ namespace ConsoleApp1
                 this.Text = System.Text.Encoding.Default.GetString(byteArray);
                 Console.WriteLine("File Reading succeed.");
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            catch (Exception e){Console.WriteLine(e.Message);}
         }
         public void ParseText()
         {
-
-            string[] txtLines = Regex.Split(this.Text, "[0-9\"\\.. %°“„…:;«»,\\r\\n!?\\-–XVI()]");
+            string[] textLines = Regex.Split(this.Text, "[0-9\"\\.. %°“„…:;«»,\\r\\n!?\\-–XVI()]");
             string[] lineWords;
 
-            // addition to the dict
-            foreach (string line in txtLines)
+            foreach (string line in textLines)
             {
                 lineWords = line.Split(" ");
                 foreach (string word in lineWords)
@@ -56,26 +49,12 @@ namespace ConsoleApp1
                     {
                         cleanWord = Regex.Replace(cleanWord, "'", string.Empty);
                     }
-                    
+
                     cleanWord = cleanWord.ToLower();
-
-                    /*// checking the result
-                    Regex rgx = new Regex("[а-яa-z]");
-                    if ((cleanWord.Length > 1) & !(rgx.IsMatch(cleanWord)))
-                    {
-                        Console.WriteLine(line);
-                    }*/
-
                     if (cleanWord.Length >= 1)
                     {
-                        if (this._dict.ContainsKey(cleanWord))
-                        {
-                            this._dict[cleanWord] += 1;
-                        }
-                        else
-                        {
-                            this._dict.Add(cleanWord, 1);
-                        }
+                        if (this._dict.ContainsKey(cleanWord)){this._dict[cleanWord] += 1;}
+                        else{this._dict.Add(cleanWord, 1);}
                     }
                 }
             }
@@ -86,22 +65,18 @@ namespace ConsoleApp1
             else
             {
                 string row = "";
+                List<string> lstOfLines = new List<string>();
                 int maxLenght = 5 + (from k in this._dict.Keys orderby k.Length descending select k).FirstOrDefault().Length;
-                List<string> lst = new List<string>();
-
                 var sortedDictByValue = from pair in this._dict orderby pair.Value descending select pair;
+                
                 foreach (KeyValuePair<string, int> pair in sortedDictByValue)
                 {
-                    int keyLenght = pair.Key.Length;
-                    int valLenght = pair.Value.ToString().Length;
-                    int spaceLenght = maxLenght - (keyLenght + valLenght);
-                    row = pair.Key + new string(' ', spaceLenght) + pair.Value.ToString();
-                    lst.Add(row);
+                    int spaceLenght = maxLenght - (pair.Key.Length + pair.Value.ToString().Length);
+                    lstOfLines.Add(pair.Key + new string(' ', spaceLenght) + pair.Value.ToString());
                 }
-                this.Result = string.Join("\n", lst);
+                this.Result = string.Join("\n", lstOfLines);
             }
         }
-
         public void WriteFile()
         {
             try
@@ -109,36 +84,25 @@ namespace ConsoleApp1
                 using FileStream outStream = File.Open(this._outPath, FileMode.Create);
                 byte[] byteArray = System.Text.Encoding.Default.GetBytes(this.Result);
                 outStream.Write(byteArray, 0, byteArray.Length);
+                Console.WriteLine("File Writing succeed.");
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            catch (Exception e){Console.WriteLine(e.Message);}
         }
-        
     }
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            // creating UsageCounter obj
-            //string inPath = "C:\\Users\\Александр\\OneDrive\\Документы\\book.txt";
-            //string outPath = "C:\\Users\\Александр\\OneDrive\\Документы\\word_stat.txt";
             Console.WriteLine("Input path: ");
             string inPath = Console.ReadLine();
             Console.WriteLine("Output path: ");
             string outPath = Console.ReadLine();
 
             UsageCounter counter = new UsageCounter(inPath, outPath);
-            
             counter.ReadFile();
-
             counter.ParseText();
-
             counter.CreateStat();
-          
             counter.WriteFile();
-
         }
     }
 }
