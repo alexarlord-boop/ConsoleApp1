@@ -7,12 +7,12 @@ using System.Text.RegularExpressions;
 
 namespace ConsoleApp1
 {
-    class UsageCounter
+    public class UsageCounter
     {
         private readonly string _onPath;
         private readonly string _outPath;
-        string Text = "";
-        string Result = "";
+        private string Text = "";
+        private string Result = "";
         private readonly Dictionary<string, int> _dict = new Dictionary<string, int>();
         
         public UsageCounter(string inPathArg, string outPathArg)
@@ -21,7 +21,6 @@ namespace ConsoleApp1
             _outPath = outPathArg;
         }
 
-        
         public void ReadFile()
         {
             try
@@ -30,9 +29,13 @@ namespace ConsoleApp1
                 byte[] byteArray = new byte[stream.Length];
                 stream.Read(byteArray, 0, byteArray.Length);
                 this.Text = System.Text.Encoding.Default.GetString(byteArray);
-                Console.WriteLine("File Reading succeed.");
+                Console.WriteLine("File reading succeed.");
             }
             catch (Exception e){Console.WriteLine(e.Message);}
+        }
+        public string GetText()
+        {
+            return this.Text;
         }
         public void ParseText()
         {
@@ -61,21 +64,16 @@ namespace ConsoleApp1
         }
         public void CreateStat()
         {
-            if (this._dict.Count() == 0){this.Result = "";}
-            else
+            List<string> lstOfLines = new List<string>();
+            int maxLenght = 5 + (from k in this._dict.Keys orderby k.Length descending select k).FirstOrDefault().Length;
+            var sortedDictByValue = from pair in this._dict orderby pair.Value descending select pair;
+            foreach (KeyValuePair<string, int> pair in sortedDictByValue)
             {
-                string row = "";
-                List<string> lstOfLines = new List<string>();
-                int maxLenght = 5 + (from k in this._dict.Keys orderby k.Length descending select k).FirstOrDefault().Length;
-                var sortedDictByValue = from pair in this._dict orderby pair.Value descending select pair;
-                
-                foreach (KeyValuePair<string, int> pair in sortedDictByValue)
-                {
-                    int spaceLenght = maxLenght - (pair.Key.Length + pair.Value.ToString().Length);
-                    lstOfLines.Add(pair.Key + new string(' ', spaceLenght) + pair.Value.ToString());
-                }
-                this.Result = string.Join("\n", lstOfLines);
+                int spaceLenght = maxLenght - (pair.Key.Length + pair.Value.ToString().Length);
+                lstOfLines.Add(pair.Key + new string(' ', spaceLenght) + pair.Value.ToString());
             }
+            this.Result = string.Join("\n", lstOfLines);
+            
         }
         public void WriteFile()
         {
@@ -84,7 +82,7 @@ namespace ConsoleApp1
                 using FileStream outStream = File.Open(this._outPath, FileMode.Create);
                 byte[] byteArray = System.Text.Encoding.Default.GetBytes(this.Result);
                 outStream.Write(byteArray, 0, byteArray.Length);
-                Console.WriteLine("File Writing succeed.");
+                Console.WriteLine("File writing succeed.");
             }
             catch (Exception e){Console.WriteLine(e.Message);}
         }
@@ -100,9 +98,16 @@ namespace ConsoleApp1
 
             UsageCounter counter = new UsageCounter(inPath, outPath);
             counter.ReadFile();
-            counter.ParseText();
-            counter.CreateStat();
-            counter.WriteFile();
+            if (counter.GetText().Length == 0) 
+            { 
+                Console.WriteLine("Incorrect input data."); 
+            }
+            else
+            {
+                counter.ParseText();
+                counter.CreateStat();
+                counter.WriteFile();
+            }
         }
     }
 }
