@@ -9,15 +9,15 @@ namespace ConsoleApp1
 {
     public class UsageCounter
     {
-        private readonly string _onPath;
+        private readonly string _inPath;
         private readonly string _outPath;
         private string Text = "";
         private string Result = "";
         private readonly Dictionary<string, int> _dict = new Dictionary<string, int>();
-        
+
         public UsageCounter(string inPathArg, string outPathArg)
         {
-            _onPath = inPathArg;
+            _inPath = inPathArg;
             _outPath = outPathArg;
         }
 
@@ -25,13 +25,13 @@ namespace ConsoleApp1
         {
             try
             {
-                using FileStream stream = File.Open(this._onPath, FileMode.Open);
+                using FileStream stream = File.Open(this._inPath, FileMode.Open);
                 byte[] byteArray = new byte[stream.Length];
                 stream.Read(byteArray, 0, byteArray.Length);
                 this.Text = System.Text.Encoding.Default.GetString(byteArray);
                 Console.WriteLine("File reading succeed.");
             }
-            catch (Exception e){Console.WriteLine(e.Message);}
+            catch (Exception e) { Console.WriteLine(e.Message); }
         }
         public string GetText()
         {
@@ -48,7 +48,7 @@ namespace ConsoleApp1
                 foreach (string word in lineWords)
                 {
                     string cleanWord = Regex.Replace(word, "[0-9\"\\.. %°“„…:;«»,\\r\\n!?\\-–XVI()]", string.Empty);
-                    if(cleanWord.StartsWith("'") || cleanWord.EndsWith("'"))
+                    if (cleanWord.StartsWith("'") || cleanWord.EndsWith("'"))
                     {
                         cleanWord = Regex.Replace(cleanWord, "'", string.Empty);
                     }
@@ -56,8 +56,8 @@ namespace ConsoleApp1
                     cleanWord = cleanWord.ToLower();
                     if (cleanWord.Length >= 1)
                     {
-                        if (this._dict.ContainsKey(cleanWord)){this._dict[cleanWord] += 1;}
-                        else{this._dict.Add(cleanWord, 1);}
+                        if (this._dict.ContainsKey(cleanWord)) { this._dict[cleanWord] += 1; }
+                        else { this._dict.Add(cleanWord, 1); }
                     }
                 }
             }
@@ -73,7 +73,7 @@ namespace ConsoleApp1
                 lstOfLines.Add(pair.Key + new string(' ', spaceLenght) + pair.Value.ToString());
             }
             this.Result = string.Join("\n", lstOfLines);
-            
+
         }
         public void WriteFile()
         {
@@ -84,23 +84,37 @@ namespace ConsoleApp1
                 outStream.Write(byteArray, 0, byteArray.Length);
                 Console.WriteLine("File writing succeed.");
             }
-            catch (Exception e){Console.WriteLine(e.Message);}
+            catch (Exception e) { Console.WriteLine(e.Message); }
         }
     }
     class Program
     {
-        static void Main()
+        static void Main(string[] args)
         {
-            Console.WriteLine("Input path: ");
-            string inPath = Console.ReadLine();
-            Console.WriteLine("Output path: ");
-            string outPath = Console.ReadLine();
+            string inPath = "";
+            string outPath = "";
+            if (args.Length == 2)
+            {
+                inPath = args[0];
+                outPath = args[1];
+            }
+            else if(args.Length != 0)
+            {
+                Console.WriteLine("Incorrect arguments.");
+            }
+            else
+            {
+                Console.Write("Input path:  ");
+                inPath = Console.ReadLine();
+                Console.Write("Output path: ");
+                outPath = Console.ReadLine();
+            }
 
             UsageCounter counter = new UsageCounter(inPath, outPath);
             counter.ReadFile();
-            if (counter.GetText().Length == 0) 
-            { 
-                Console.WriteLine("Incorrect input data."); 
+            if (counter.GetText().Length == 0)
+            {
+                Console.WriteLine("Incorrect input data.");
             }
             else
             {
@@ -111,4 +125,3 @@ namespace ConsoleApp1
         }
     }
 }
-
