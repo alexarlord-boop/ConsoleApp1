@@ -9,7 +9,7 @@ namespace ConsoleApp1
 {
     public class UsageCounter
     {
-        // testing MSVS VCS 
+        // testing VS VCS
         private readonly string _inPath;
         private readonly string _outPath;
         private string Text = "";
