@@ -1,25 +1,53 @@
 using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
+using Parser;
+using System.Reflection;
 
 
 namespace ConsoleApp1
 {
-    
     class Program
     {
+        public static string ReadFile(string path)
+        {
+            try
+            {
+                FileStream stream = File.Open(path, FileMode.Open);
+                byte[] byteArray = new byte[stream.Length];
+                stream.Read(byteArray, 0, byteArray.Length);
+                string text = System.Text.Encoding.Default.GetString(byteArray);
+                Console.WriteLine("File reading succeed.");
+                return text;
+            }
+            catch (Exception e) { Console.WriteLine(e.Message); return ""; }
+        }
+
+        public static void WriteFile(string result, string path)
+        {
+            try
+            {
+                FileStream outStream = File.Open(path, FileMode.Create);
+                byte[] byteArray = System.Text.Encoding.Default.GetBytes(result);
+                outStream.Write(byteArray, 0, byteArray.Length);
+                Console.WriteLine("File writing succeed.");
+            }
+            catch (Exception e) { Console.WriteLine(e.Message); }
+        }
+
         static void Main(string[] args)
         {
-            string inPath = "";
-            string outPath = "";
+            string inPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\book.txt";
+            string outPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\stat.txt";
+            string fileData = "";
+            string result = "";
+
             if (args.Length == 2)
             {
                 inPath = args[0];
                 outPath = args[1];
             }
-            else if(args.Length != 0)
+            else if (args.Length != 0)
             {
                 Console.WriteLine("Incorrect arguments.");
             }
@@ -31,18 +59,33 @@ namespace ConsoleApp1
                 outPath = Console.ReadLine();
             }
 
-            //UsageCounter counter = new UsageCounter(inPath, outPath);
+
+            /*-------------------------REFLECTION PART-------------------------*/
+
+            // reading data
+            fileData = ReadFile(inPath);
+            string[] arg = new string[] { fileData };
             
-            counter.ReadFile();
-            if (counter.GetText().Length == 0)
+            if (fileData.Length == 0)
             {
                 Console.WriteLine("Incorrect input data.");
             }
             else
-            {
-                counter.ParseText();
-                counter.CreateStat();
-                counter.WriteFile();
+            { 
+                //creating object
+
+                var t = typeof(UsageCounter);
+                var counter = (UsageCounter)Activator.CreateInstance(t);
+                MethodInfo[] mi = counter.GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance);
+                MethodInfo parseText = mi.FirstOrDefault(x => x.Name == "ParseText");
+                MethodInfo createStat = mi.FirstOrDefault(x => x.Name == "CreateStat");
+
+                //getting the result string
+                parseText.Invoke(counter, arg);
+                result = (string)createStat.Invoke(counter, null);
+
+                //writing data
+                WriteFile(result, outPath);
             }
         }
     }
