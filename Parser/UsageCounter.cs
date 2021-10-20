@@ -57,7 +57,7 @@ namespace Parser
         /*-------------------------THREADING PART-------------------------*/
 
 
-        public void ThreadParseText(string Text)
+        public ConcurrentDictionary<string, int> ThreadParseText(string Text)
         {
             int initCapacity = 400000;
             int concurrencyLevel = Environment.ProcessorCount * 2;
@@ -67,6 +67,7 @@ namespace Parser
 
             string[] textLines = Regex.Split(Text, Pattern);
             string[] lineWords;
+            int[] partsIndexes = new int[concurrencyLevel];
 
 
             foreach (string line in textLines)
@@ -88,6 +89,7 @@ namespace Parser
 
                 }
             }
+            return cd;
         }
 
     }
