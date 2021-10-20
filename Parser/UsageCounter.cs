@@ -52,5 +52,12 @@ namespace Parser
             return string.Join("\n", lstOfLines);
 
         }
+
+        /*-------------------------THREADING PART-------------------------*/
+        public void ThreadParseText(string Text)
+        {
+
+        }
+
     }
 }
