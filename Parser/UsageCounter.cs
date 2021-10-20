@@ -56,20 +56,9 @@ namespace Parser
 
         /*-------------------------THREADING PART-------------------------*/
 
-
-        public ConcurrentDictionary<string, int> ThreadParseText(string Text)
+        public  void JobForAThread(ConcurrentDictionary<string, int> cd, string[] textLines)
         {
-            int initCapacity = 400000;
-            int concurrencyLevel = Environment.ProcessorCount * 2;
-            Console.WriteLine(concurrencyLevel);
-            ConcurrentDictionary<string, int> cd = new ConcurrentDictionary<string, int>(concurrencyLevel, initCapacity);
-
-
-            string[] textLines = Regex.Split(Text, Pattern);
             string[] lineWords;
-            int[] partsIndexes = new int[concurrencyLevel];
-
-
             foreach (string line in textLines)
             {
                 lineWords = line.Split(' ');
@@ -89,6 +78,23 @@ namespace Parser
 
                 }
             }
+            Thread.Sleep(50);
+        }
+
+        public ConcurrentDictionary<string, int> ThreadParseText(string Text)
+        {
+            int initCapacity = 400000;
+            int concurrencyLevel = Environment.ProcessorCount * 2;
+            Console.WriteLine(concurrencyLevel);
+            ConcurrentDictionary<string, int> cd = new ConcurrentDictionary<string, int>(concurrencyLevel, initCapacity);
+
+
+            string[] textLines = Regex.Split(Text, Pattern);
+            var parts = (List<string[]>)textLines.GroupBy(_ => concurrencyLevel++ / concurrencyLevel).Select(v => v.ToArray());
+
+            // Parallel must be used
+
+            
             return cd;
         }
 
