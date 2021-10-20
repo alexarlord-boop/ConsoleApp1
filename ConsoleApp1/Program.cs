@@ -59,9 +59,6 @@ namespace ConsoleApp1
                 outPath = Console.ReadLine();
             }
 
-
-            /*-------------------------REFLECTION PART-------------------------*/
-
             // reading data
             fileData = ReadFile(inPath);
             string[] arg = new string[] { fileData };
@@ -71,7 +68,10 @@ namespace ConsoleApp1
                 Console.WriteLine("Incorrect input data.");
             }
             else
-            { 
+            {
+
+                /*-------------------------REFLECTION PART-------------------------*/
+
                 //creating object
                 var t = typeof(UsageCounter);
                 var counter = (UsageCounter)Activator.CreateInstance(t);
