@@ -73,16 +73,12 @@ namespace ConsoleApp1
             else
             { 
                 //creating object
-
                 var t = typeof(UsageCounter);
                 var counter = (UsageCounter)Activator.CreateInstance(t);
-                MethodInfo[] mi = counter.GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance);
-                MethodInfo parseText = mi.FirstOrDefault(x => x.Name == "ParseText");
-                MethodInfo createStat = mi.FirstOrDefault(x => x.Name == "CreateStat");
+                MethodInfo createStat = counter.GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(x => x.Name == "CreateStat");
 
                 //getting the result string
-                parseText.Invoke(counter, arg);
-                result = (string)createStat.Invoke(counter, null);
+                result = (string)createStat.Invoke(counter, arg);
 
                 //writing data
                 WriteFile(result, outPath);

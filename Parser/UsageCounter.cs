@@ -14,7 +14,6 @@ namespace Parser
         
         private void ParseText(string Text)
         {
-            Console.WriteLine("PARSING");
             string[] textLines = Regex.Split(Text, Pattern);
             string[] lineWords;
 
@@ -38,8 +37,9 @@ namespace Parser
                 }
             }
         }
-        private string CreateStat()
+        private string CreateStat(string Text)
         {
+            ParseText(Text);
             List<string> lstOfLines = new List<string>();
             int maxLenght = 5 + (from k in this._dict.Keys orderby k.Length descending select k).FirstOrDefault().Length;
             var sortedDictByValue = from pair in this._dict orderby pair.Value descending select pair;

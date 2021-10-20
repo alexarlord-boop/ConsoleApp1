@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime;
 
 namespace AbstractCLass
 {
@@ -9,6 +10,10 @@ namespace AbstractCLass
         public int number;
         public string str;
 
+        public Class1()
+        {
+           
+        }
         public Class1(int n, string s)
         {
             this.number = n;
@@ -21,12 +26,12 @@ namespace AbstractCLass
         static void Main(string[] args)
         {
             Type t = typeof(Class1);
-            Console.WriteLine(t.Name);
-            //var c = t.Assembly.CreateInstance(t.Name);
+            
+            Console.WriteLine(t.IsAbstract);
 
-            ConstructorInfo ci = t.GetConstructor(new Type[] { typeof(int), typeof(string) });
-            //object instance = ci.Invoke(new object[] { 10, "str"});
-            var innstance = (Class1)Activator.CreateInstance(t, 1, "str");
+            /*Class1 instance = new Class1() {};*/
+
+            
 
             
             
