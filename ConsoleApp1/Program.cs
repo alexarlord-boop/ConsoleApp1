@@ -1,8 +1,10 @@
 using System;
 using System.IO;
 using System.Linq;
-using Parser;
 using System.Reflection;
+using System.Diagnostics;
+
+using Parser;
 
 
 namespace ConsoleApp1
@@ -37,12 +39,14 @@ namespace ConsoleApp1
 
         static void Main(string[] args)
         {
+            Stopwatch stopwatch = new Stopwatch();
+
             string inPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\book.txt";
             string outPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\stat.txt";
             string fileData = "";
             string result = "";
 
-            if (args.Length == 2)
+            /*if (args.Length == 2)
             {
                 inPath = args[0];
                 outPath = args[1];
@@ -57,7 +61,7 @@ namespace ConsoleApp1
                 inPath = Console.ReadLine();
                 Console.Write("Output path: ");
                 outPath = Console.ReadLine();
-            }
+            }*/
 
 
             /*-------------------------REFLECTION PART-------------------------*/
@@ -78,11 +82,18 @@ namespace ConsoleApp1
                 MethodInfo createStat = counter.GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(x => x.Name == "CreateStat");
 
                 //getting the result string
+                stopwatch.Start();
                 result = (string)createStat.Invoke(counter, arg);
+                stopwatch.Stop();
 
                 //writing data
                 WriteFile(result, outPath);
+
             }
+
+            
+            Console.Write("Private method stats: ");
+            Console.WriteLine(stopwatch.ElapsedMilliseconds);
         }
     }
 }

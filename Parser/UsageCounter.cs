@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace Parser
 {
@@ -51,6 +52,5 @@ namespace Parser
             return string.Join("\n", lstOfLines);
 
         }
-        
     }
 }
