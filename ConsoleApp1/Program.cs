@@ -75,7 +75,9 @@ namespace ConsoleApp1
                 //creating object
                 var t = typeof(UsageCounter);
                 var counter = (UsageCounter)Activator.CreateInstance(t);
-                MethodInfo createStat = counter.GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(x => x.Name == "CreateStat");
+
+                //getting private method of the instance
+                MethodInfo createStat = counter.GetType().GetMethod("CreateStat", BindingFlags.NonPublic | BindingFlags.Instance);
 
                 //getting the result string
                 result = (string)createStat.Invoke(counter, arg);
