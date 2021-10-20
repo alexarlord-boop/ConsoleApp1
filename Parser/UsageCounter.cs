@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Collections.Concurrent;
 using System.Threading;
 
 namespace Parser
@@ -55,21 +56,38 @@ namespace Parser
 
         /*-------------------------THREADING PART-------------------------*/
 
-        delegate int NewKeyCase(string k);
-        delegate int OldKeyCase(string k, int oldValue);
-
-        public static int NewKeyMethod(string k)
-        {
-            return 0;
-        }
-        public static int OldKeyMethod(string k, int oldValue)
-        {
-            return oldValue += 1;
-        }
 
         public void ThreadParseText(string Text)
         {
+            int initCapacity = 400000;
+            int concurrencyLevel = Environment.ProcessorCount * 2;
+            Console.WriteLine(concurrencyLevel);
+            ConcurrentDictionary<string, int> cd = new ConcurrentDictionary<string, int>(concurrencyLevel, initCapacity);
 
+
+            string[] textLines = Regex.Split(Text, Pattern);
+            string[] lineWords;
+
+
+            foreach (string line in textLines)
+            {
+                lineWords = line.Split(' ');
+                foreach (string word in lineWords)
+                {
+                    string cleanWord = Regex.Replace(word, "[0-9\"\\.. %°“„…:;«»,\\r\\n!?\\-–XVI()]", string.Empty);
+                    if (cleanWord.StartsWith("'") || cleanWord.EndsWith("'"))
+                    {
+                        cleanWord = Regex.Replace(cleanWord, "'", string.Empty);
+                    }
+
+                    cleanWord = cleanWord.ToLower();
+                    if (cleanWord.Length >= 1)
+                    {
+                        cd.AddOrUpdate(cleanWord, 1, (key, oldValue) => oldValue + 1);
+                    }
+
+                }
+            }
         }
 
     }
