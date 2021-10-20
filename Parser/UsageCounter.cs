@@ -54,6 +54,19 @@ namespace Parser
         }
 
         /*-------------------------THREADING PART-------------------------*/
+
+        delegate int NewKeyCase(string k);
+        delegate int OldKeyCase(string k, int oldValue);
+
+        public static int NewKeyMethod(string k)
+        {
+            return 0;
+        }
+        public static int OldKeyMethod(string k, int oldValue)
+        {
+            return oldValue += 1;
+        }
+
         public void ThreadParseText(string Text)
         {
 
