@@ -16,7 +16,7 @@ namespace Parser
 
         static int initCapacity = 400000;
         static int concurrencyLevel = Environment.ProcessorCount * 2;
-        ConcurrentDictionary<string, int> cd = new ConcurrentDictionary<string, int>(concurrencyLevel, initCapacity);
+        static ConcurrentDictionary<string, int> cd = new ConcurrentDictionary<string, int>(concurrencyLevel, initCapacity);
 
 
 
@@ -58,7 +58,7 @@ namespace Parser
 
         /*-------------------------THREADING PART-------------------------*/
 
-        public static void JobForAThread(ConcurrentDictionary<string, int> cd, List<string> textLines)
+        public static void JobForAThread(List<string> textLines)
         {
             string[] lineWords;
             foreach (string line in textLines)
@@ -91,11 +91,13 @@ namespace Parser
             var parts = Enumerable.Range(0, concurrencyLevel).
                 Select(i => textLines.Skip(i * chunkLength).Take(chunkLength).ToList()).ToList();
 
-            var res = Parallel.For(0, concurrencyLevel, (i, state) =>
+            /*var res = Parallel.For(0, concurrencyLevel, (i, state) =>
                 {
                     //var part = textLines.Skip(i * chunkLength).Take(chunkLength).ToList();
                     JobForAThread(cd, parts[i]);
-                });
+                });*/
+
+            var res = Parallel.ForEach(parts, JobForAThread);
 
             List<string> lstOfLines = new List<string>();
             int maxLenght = 5 + (from k in cd.Keys orderby k.Length descending select k).FirstOrDefault().Length;
@@ -107,6 +109,7 @@ namespace Parser
             }
             return string.Join("\n", lstOfLines);
         }
+
 
     }
 }
