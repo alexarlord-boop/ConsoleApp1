@@ -80,7 +80,27 @@ namespace Parser
 
                 }
             }
-            Thread.Sleep(50);
+        }        
+        
+        public static void JobForAThread2(string line)
+        {
+            string[] lineWords;
+            lineWords = line.Split(' ');
+            foreach (string word in lineWords)
+            {
+                string cleanWord = Regex.Replace(word, "[0-9\"\\.. %°“„…:;«»,\\r\\n!?\\-–XVI()]", string.Empty);
+                if (cleanWord.StartsWith("'") || cleanWord.EndsWith("'"))
+                {
+                    cleanWord = Regex.Replace(cleanWord, "'", string.Empty);
+                }
+
+                cleanWord = cleanWord.ToLower();
+                if (cleanWord.Length >= 1)
+                {
+                    cd.AddOrUpdate(cleanWord, 1, (key, oldValue) => oldValue + 1);
+                }
+
+            }
         }
 
         public string ThreadCreateStat(string Text)
@@ -110,6 +130,24 @@ namespace Parser
             return string.Join("\n", lstOfLines);
         }
 
+        public string ThreadCreateStat2(string Text)
+        {
+            string[] textLines = Regex.Split(Text, Pattern);
+            int chunkLength = (int)Math.Ceiling(textLines.Length / (double)concurrencyLevel);
+
+
+            var res = Parallel.ForEach(textLines, JobForAThread2);
+
+            List<string> lstOfLines = new List<string>();
+            int maxLenght = 5 + (from k in cd.Keys orderby k.Length descending select k).FirstOrDefault().Length;
+            var sortedDictByValue = from pair in cd orderby pair.Value descending select pair;
+            foreach (KeyValuePair<string, int> pair in sortedDictByValue)
+            {
+                int spaceLenght = maxLenght - (pair.Key.Length + pair.Value.ToString().Length);
+                lstOfLines.Add(pair.Key + new string(' ', spaceLenght) + pair.Value.ToString());
+            }
+            return string.Join("\n", lstOfLines);
+        }
 
     }
 }
