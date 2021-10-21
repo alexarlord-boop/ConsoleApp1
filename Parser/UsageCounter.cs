@@ -58,7 +58,7 @@ namespace Parser
 
         /*-------------------------THREADING PART-------------------------*/
              
-        public static void JobForAThread2(string line)
+        public static void JobForAThread(string line)
         {
             string[] lineWords;
             lineWords = line.Split(' ');
@@ -79,13 +79,13 @@ namespace Parser
             }
         }
 
-        public string ThreadCreateStat2(string Text)
+        public string ThreadCreateStat(string Text)
         {
             string[] textLines = Regex.Split(Text, Pattern);
             int chunkLength = (int)Math.Ceiling(textLines.Length / (double)concurrencyLevel);
 
 
-            var res = Parallel.ForEach(textLines, JobForAThread2);
+            var res = Parallel.ForEach(textLines, JobForAThread);
 
             List<string> lstOfLines = new List<string>();
             int maxLenght = 5 + (from k in cd.Keys orderby k.Length descending select k).FirstOrDefault().Length;
