@@ -85,17 +85,28 @@ namespace ConsoleApp1
                 stopwatch.Start();
                 result = (string)createStat.Invoke(counter, arg);
                 stopwatch.Stop();
+                Console.Write("Private method stats: ");
+                Console.WriteLine(stopwatch.ElapsedMilliseconds);
 
                 //writing data
                 WriteFile(result, outPath);
 
-                
+                stopwatch.Reset();
+
+                //getting the result string via standard method
+                stopwatch.Start();
+                result = counter.ThreadCreateStat(fileData);
+                stopwatch.Stop();
+                Console.Write("Thread method stats: ");
+                Console.WriteLine(stopwatch.ElapsedMilliseconds);
+
+                //writing new data
+                WriteFile(result, outPath);
 
             }
 
             
-            Console.Write("Private method stats: ");
-            Console.WriteLine(stopwatch.ElapsedMilliseconds);
+           
         }
     }
 }
