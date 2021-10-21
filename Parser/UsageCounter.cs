@@ -57,31 +57,7 @@ namespace Parser
         }
 
         /*-------------------------THREADING PART-------------------------*/
-
-        public static void JobForAThread(List<string> textLines)
-        {
-            string[] lineWords;
-            foreach (string line in textLines)
-            {
-                lineWords = line.Split(' ');
-                foreach (string word in lineWords)
-                {
-                    string cleanWord = Regex.Replace(word, "[0-9\"\\.. %°“„…:;«»,\\r\\n!?\\-–XVI()]", string.Empty);
-                    if (cleanWord.StartsWith("'") || cleanWord.EndsWith("'"))
-                    {
-                        cleanWord = Regex.Replace(cleanWord, "'", string.Empty);
-                    }
-
-                    cleanWord = cleanWord.ToLower();
-                    if (cleanWord.Length >= 1)
-                    {
-                        cd.AddOrUpdate(cleanWord, 1, (key, oldValue) => oldValue + 1);
-                    }
-
-                }
-            }
-        }        
-        
+             
         public static void JobForAThread2(string line)
         {
             string[] lineWords;
