@@ -93,20 +93,20 @@ namespace ConsoleApp1
 
                 stopwatch.Reset();
 
-                //getting the result string via first thread method
+                /*//getting the result string via first thread method
                 stopwatch.Start();
                 result = counter.ThreadCreateStat(fileData);
                 stopwatch.Stop();
                 Console.Write("Thread method1 stats: ");
                 Console.WriteLine(stopwatch.ElapsedMilliseconds);
 
-                stopwatch.Reset();
+                stopwatch.Reset();*/
 
-                //getting the result string via second thread method
+                //getting the result string via FOREACH thread method
                 stopwatch.Start();
                 result = counter.ThreadCreateStat2(fileData);
                 stopwatch.Stop();
-                Console.Write("Thread method2 stats: ");
+                Console.Write("Thread method stats: ");
                 Console.WriteLine(stopwatch.ElapsedMilliseconds);
 
                 //writing new data
