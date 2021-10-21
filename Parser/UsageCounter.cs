@@ -78,7 +78,7 @@ namespace Parser
             Thread.Sleep(50);
         }
 
-        public ConcurrentDictionary<string, int> ThreadParseText(string Text)
+        public ConcurrentDictionary<string, int> ThreadCreateStat(string Text)
         {
             int initCapacity = 400000;
             int concurrencyLevel = Environment.ProcessorCount * 2;
