@@ -14,7 +14,12 @@ namespace Parser
         public string result = "";
         public  Dictionary<string, int> _dict = new Dictionary<string, int>();
 
-        
+        static int initCapacity = 400000;
+        static int concurrencyLevel = Environment.ProcessorCount * 2;
+        ConcurrentDictionary<string, int> cd = new ConcurrentDictionary<string, int>(concurrencyLevel, initCapacity);
+
+
+
         private string CreateStat(string Text)
         {
             string[] textLines = Regex.Split(Text, Pattern);
@@ -80,32 +85,15 @@ namespace Parser
 
         public string ThreadCreateStat(string Text)
         {
-            int initCapacity = 400000;
-            int concurrencyLevel = Environment.ProcessorCount * 2;
-            //Console.WriteLine("Processor amount: " + concurrencyLevel.ToString());
-            ConcurrentDictionary<string, int> cd = new ConcurrentDictionary<string, int>(concurrencyLevel, initCapacity);
-
-
             string[] textLines = Regex.Split(Text, Pattern);
-            int totalLength = textLines.Length;
-            int chunkLength = (int)Math.Ceiling(totalLength / (double)concurrencyLevel);
-            //Console.WriteLine(chunkLength);
+            int chunkLength = (int)Math.Ceiling(textLines.Length / (double)concurrencyLevel);
+
             var parts = Enumerable.Range(0, concurrencyLevel).
                 Select(i => textLines.Skip(i * chunkLength).Take(chunkLength).ToList()).ToList();
 
-            //Console.WriteLine("Thread amount: " + parts.Count);
-
-
-            // Parallel solution
-            /*Action[] list = new Action[concurrencyLevel];
-            for (int i = 0; i < concurrencyLevel; i++)
-            {
-                list.Append(() => JobForAThread(cd, parts[i]));
-            }*/
-
             var res = Parallel.For(0, concurrencyLevel, (i, state) =>
                 {
-                    //Console.WriteLine("Thread cycle: {0}", i);
+                    //var part = textLines.Skip(i * chunkLength).Take(chunkLength).ToList();
                     JobForAThread(cd, parts[i]);
                 });
 
