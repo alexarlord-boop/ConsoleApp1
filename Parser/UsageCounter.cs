@@ -79,33 +79,6 @@ namespace Parser
             }
         }
 
-        public string ThreadCreateStat(string Text)
-        {
-            string[] textLines = Regex.Split(Text, Pattern);
-            int chunkLength = (int)Math.Ceiling(textLines.Length / (double)concurrencyLevel);
-
-            var parts = Enumerable.Range(0, concurrencyLevel).
-                Select(i => textLines.Skip(i * chunkLength).Take(chunkLength).ToList()).ToList();
-
-            /*var res = Parallel.For(0, concurrencyLevel, (i, state) =>
-                {
-                    //var part = textLines.Skip(i * chunkLength).Take(chunkLength).ToList();
-                    JobForAThread(cd, parts[i]);
-                });*/
-
-            var res = Parallel.ForEach(parts, JobForAThread);
-
-            List<string> lstOfLines = new List<string>();
-            int maxLenght = 5 + (from k in cd.Keys orderby k.Length descending select k).FirstOrDefault().Length;
-            var sortedDictByValue = from pair in cd orderby pair.Value descending select pair;
-            foreach (KeyValuePair<string, int> pair in sortedDictByValue)
-            {
-                int spaceLenght = maxLenght - (pair.Key.Length + pair.Value.ToString().Length);
-                lstOfLines.Add(pair.Key + new string(' ', spaceLenght) + pair.Value.ToString());
-            }
-            return string.Join("\n", lstOfLines);
-        }
-
         public string ThreadCreateStat2(string Text)
         {
             string[] textLines = Regex.Split(Text, Pattern);
