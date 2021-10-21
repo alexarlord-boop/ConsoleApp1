@@ -78,7 +78,7 @@ namespace ConsoleApp1
             {
                 Console.WriteLine("Regular   Thread");
 
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < 50; i++)
                 {
 
                     //creating object
