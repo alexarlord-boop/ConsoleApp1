@@ -78,7 +78,7 @@ namespace Parser
             Thread.Sleep(50);
         }
 
-        public ConcurrentDictionary<string, int> ThreadCreateStat(string Text)
+        public string ThreadCreateStat(string Text)
         {
             int initCapacity = 400000;
             int concurrencyLevel = Environment.ProcessorCount * 2;
@@ -102,8 +102,16 @@ namespace Parser
             }
             
             Parallel.Invoke(list);
-            
-            return cd;
+
+            List<string> lstOfLines = new List<string>();
+            int maxLenght = 5 + (from k in cd.Keys orderby k.Length descending select k).FirstOrDefault().Length;
+            var sortedDictByValue = from pair in cd orderby pair.Value descending select pair;
+            foreach (KeyValuePair<string, int> pair in sortedDictByValue)
+            {
+                int spaceLenght = maxLenght - (pair.Key.Length + pair.Value.ToString().Length);
+                lstOfLines.Add(pair.Key + new string(' ', spaceLenght) + pair.Value.ToString());
+            }
+            return string.Join("\n", lstOfLines);
         }
 
     }
