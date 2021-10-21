@@ -81,13 +81,15 @@ namespace ConsoleApp1
                 var counter = (UsageCounter)Activator.CreateInstance(t);
                 MethodInfo createStat = counter.GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(x => x.Name == "CreateStat");
 
-                //getting the result string
+                //getting the result string via standard method
                 stopwatch.Start();
                 result = (string)createStat.Invoke(counter, arg);
                 stopwatch.Stop();
 
                 //writing data
                 WriteFile(result, outPath);
+
+                
 
             }
 

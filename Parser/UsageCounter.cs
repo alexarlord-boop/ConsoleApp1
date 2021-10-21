@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Collections.Concurrent;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Parser
 {
@@ -56,7 +57,7 @@ namespace Parser
 
         /*-------------------------THREADING PART-------------------------*/
 
-        public  void JobForAThread(ConcurrentDictionary<string, int> cd, string[] textLines)
+        public  void JobForAThread(ConcurrentDictionary<string, int> cd, List<string> textLines)
         {
             string[] lineWords;
             foreach (string line in textLines)
@@ -85,15 +86,26 @@ namespace Parser
         {
             int initCapacity = 400000;
             int concurrencyLevel = Environment.ProcessorCount * 2;
-            Console.WriteLine(concurrencyLevel);
+            Console.WriteLine("Processor amount: " + concurrencyLevel.ToString());
             ConcurrentDictionary<string, int> cd = new ConcurrentDictionary<string, int>(concurrencyLevel, initCapacity);
 
 
             string[] textLines = Regex.Split(Text, Pattern);
-            var parts = (List<string[]>)textLines.GroupBy(_ => concurrencyLevel++ / concurrencyLevel).Select(v => v.ToArray());
+            int totalLength = textLines.Length;
+            int chunkLength = (int)Math.Ceiling(totalLength / (double)concurrencyLevel);
+            var parts = Enumerable.Range(0, concurrencyLevel).
+                Select(i => textLines.Skip(i * chunkLength).Take(chunkLength).ToList()).ToList();
+            Console.WriteLine("Thread amount: " + parts.Count);
 
-            // Parallel must be used
 
+            // Parallel solution
+            Action[] list = new Action[concurrencyLevel];
+            for (int i = 0; i < concurrencyLevel; i++)
+            {
+                list.Append(() => JobForAThread(cd, parts[i]));
+            }
+            
+            Parallel.Invoke(list);
             
             return cd;
         }
