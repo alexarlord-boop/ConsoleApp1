@@ -15,7 +15,7 @@ namespace Parser
         public  Dictionary<string, int> _dict = new Dictionary<string, int>();
 
         
-        private void ParseText(string Text)
+        private string CreateStat(string Text)
         {
             string[] textLines = Regex.Split(Text, Pattern);
             string[] lineWords;
@@ -39,10 +39,6 @@ namespace Parser
                     }
                 }
             }
-        }
-        private string CreateStat(string Text)
-        {
-            ParseText(Text);
             List<string> lstOfLines = new List<string>();
             int maxLenght = 5 + (from k in this._dict.Keys orderby k.Length descending select k).FirstOrDefault().Length;
             var sortedDictByValue = from pair in this._dict orderby pair.Value descending select pair;
@@ -57,7 +53,7 @@ namespace Parser
 
         /*-------------------------THREADING PART-------------------------*/
 
-        public  void JobForAThread(ConcurrentDictionary<string, int> cd, List<string> textLines)
+        public void JobForAThread(ConcurrentDictionary<string, int> cd, List<string> textLines)
         {
             string[] lineWords;
             foreach (string line in textLines)
