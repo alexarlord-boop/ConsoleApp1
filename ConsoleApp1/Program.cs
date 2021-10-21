@@ -37,7 +37,7 @@ namespace ConsoleApp1
             catch (Exception e) { Console.WriteLine(e.Message); }
         }
 
-        static void Main(string[] args)
+        static void Main()
         {
             Stopwatch stopwatch = new Stopwatch();
 
