@@ -83,7 +83,7 @@ namespace Parser
         {
             string[] textLines = Regex.Split(Text, Pattern);
             int chunkLength = (int)Math.Ceiling(textLines.Length / (double)concurrencyLevel);
-
+            cd.Clear();
 
             var res = Parallel.ForEach(textLines, JobForAThread);
 

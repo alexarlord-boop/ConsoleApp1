@@ -19,7 +19,7 @@ namespace ConsoleApp1
                 byte[] byteArray = new byte[stream.Length];
                 stream.Read(byteArray, 0, byteArray.Length);
                 string text = System.Text.Encoding.Default.GetString(byteArray);
-                Console.WriteLine("File reading succeed.");
+                //Console.WriteLine("File reading succeed.");
                 return text;
             }
             catch (Exception e) { Console.WriteLine(e.Message); return ""; }
@@ -32,7 +32,7 @@ namespace ConsoleApp1
                 FileStream outStream = File.Open(path, FileMode.Create);
                 byte[] byteArray = System.Text.Encoding.Default.GetBytes(result);
                 outStream.Write(byteArray, 0, byteArray.Length);
-                Console.WriteLine("File writing succeed.");
+                //Console.WriteLine("File writing succeed.");
             }
             catch (Exception e) { Console.WriteLine(e.Message); }
         }
@@ -75,35 +75,40 @@ namespace ConsoleApp1
                 Console.WriteLine("Incorrect input data.");
             }
             else
-            { 
-                //creating object
-                var t = typeof(UsageCounter);
-                var counter = (UsageCounter)Activator.CreateInstance(t);
-                MethodInfo createStat = counter.GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(x => x.Name == "CreateStat");
+            {
+                Console.WriteLine("Regular   Thread");
 
-                //getting the result string via standard method
-                stopwatch.Start();
-                result = (string)createStat.Invoke(counter, arg);
-                stopwatch.Stop();
-                string res1 = stopwatch.ElapsedMilliseconds.ToString();
-                stopwatch.Reset();
+                for (int i = 0; i < 100; i++)
+                {
 
-                //writing data
-                WriteFile(result, outPath);
+                    //creating object
+                    var t = typeof(UsageCounter);
+                    var counter = (UsageCounter)Activator.CreateInstance(t);
+                    MethodInfo createStat = counter.GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(x => x.Name == "CreateStat");
 
+                    //getting the result string via standard method
+                    stopwatch.Start();
+                    result = (string)createStat.Invoke(counter, arg);
+                    stopwatch.Stop();
+                    string res1 = stopwatch.ElapsedMilliseconds.ToString();
+                    stopwatch.Reset();
 
-                //getting the result string via FOREACH thread method
-                stopwatch.Start();
-                result = counter.ThreadCreateStat(fileData);
-                stopwatch.Stop();
-                string res2 = stopwatch.ElapsedMilliseconds.ToString();
-                stopwatch.Reset();
-
-                //writing new data
-                WriteFile(result, outPath);
+                    //writing data
+                    WriteFile(result, outPath);
 
 
+                    //getting the result string via FOREACH thread method
+                    stopwatch.Start();
+                    result = counter.ThreadCreateStat(fileData);
+                    stopwatch.Stop();
+                    string res2 = stopwatch.ElapsedMilliseconds.ToString();
+                    stopwatch.Reset();
 
+                    //writing new data
+                    WriteFile(result, outPath);
+
+                    Console.WriteLine(res1 + "       " + res2);
+                }
             }
 
             
