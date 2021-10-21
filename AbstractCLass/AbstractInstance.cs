@@ -10,14 +10,11 @@ namespace AbstractCLass
         public int number;
         public string str;
 
+    
         public Class1()
         {
-           
-        }
-        public Class1(int n, string s)
-        {
-            this.number = n;
-            this.str = s;
+            this.number = 1;
+            this.str = "abx a";
         }
     }
 
@@ -26,8 +23,11 @@ namespace AbstractCLass
         static void Main(string[] args)
         {
             Type t = typeof(Class1);
+
+            var inst = (Class1)Activator.CreateInstance(t, BindingFlags.SuppressChangeType | BindingFlags.DoNotWrapExceptions | BindingFlags.CreateInstance, null);
             
-            Console.WriteLine(t.IsAbstract);
+
+                
 
             /*Class1 instance = new Class1() {};*/
 
