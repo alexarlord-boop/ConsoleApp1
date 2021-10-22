@@ -12,7 +12,7 @@ namespace Parser
     {
         private const string Pattern = "[0-9\"\\.. %°“„…:;«»,\\r\\n!?\\-–XVI()]";
         public string result = "";
-        public  Dictionary<string, int> _dict = new Dictionary<string, int>();
+        public Dictionary<string, int> _dict = new Dictionary<string, int>();
 
         static int initCapacity = 400000;
         static int concurrencyLevel = Environment.ProcessorCount * 2;

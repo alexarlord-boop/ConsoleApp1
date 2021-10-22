@@ -73,15 +73,16 @@ namespace ConsoleApp1
             }
             else
             {
+                //creating object
+                var t = typeof(UsageCounter);
+                var counter = (UsageCounter)Activator.CreateInstance(t);
+
+                //getting private method of the instance
+                MethodInfo createStat = counter.GetType().GetMethod("CreateStat", BindingFlags.NonPublic | BindingFlags.Instance);
+
                 Console.WriteLine("Regular   Thread");
                 for (int i = 0; i < 50; i++)
                 {
-
-                    //creating object
-                    var t = typeof(UsageCounter);
-                    var counter = (UsageCounter)Activator.CreateInstance(t);
-                    MethodInfo createStat = counter.GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(x => x.Name == "CreateStat");
-
                     //getting the result string via standard method
                     stopwatch.Start();
                     result = (string)createStat.Invoke(counter, arg);
@@ -106,9 +107,6 @@ namespace ConsoleApp1
                     Console.WriteLine(res1 + "       " + res2);
                 }
             }
-
-            
-           
         }
     }
 }
