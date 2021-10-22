@@ -97,6 +97,5 @@ namespace Parser
             }
             return string.Join("\n", lstOfLines);
         }
-
     }
 }

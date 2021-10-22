@@ -37,7 +37,7 @@ namespace ConsoleApp1
             catch (Exception e) { Console.WriteLine(e.Message); }
         }
 
-        static void Main()
+        static void Main(string[] args)
         {
             Stopwatch stopwatch = new Stopwatch();
 
@@ -46,7 +46,7 @@ namespace ConsoleApp1
             string fileData = "";
             string result = "";
 
-            /*if (args.Length == 2)
+            if (args.Length == 2)
             {
                 inPath = args[0];
                 outPath = args[1];
@@ -61,10 +61,7 @@ namespace ConsoleApp1
                 inPath = Console.ReadLine();
                 Console.Write("Output path: ");
                 outPath = Console.ReadLine();
-            }*/
-
-
-            /*-------------------------REFLECTION PART-------------------------*/
+            }
 
             // reading data
             fileData = ReadFile(inPath);
@@ -77,7 +74,6 @@ namespace ConsoleApp1
             else
             {
                 Console.WriteLine("Regular   Thread");
-
                 for (int i = 0; i < 50; i++)
                 {
 
