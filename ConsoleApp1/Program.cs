@@ -74,16 +74,17 @@ namespace ConsoleApp1
             }
             else
             {
-                Console.WriteLine("Regular   Thread");
+                
+                //creating object
+                var t = typeof(UsageCounter);
+                var counter = (UsageCounter)Activator.CreateInstance(t);
+                MethodInfo createStat = counter.GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(x => x.Name == "CreateStat");
 
+                Console.WriteLine("Regular   Thread");
                 for (int i = 0; i < 50; i++)
                 {
 
-                    //creating object
-                    var t = typeof(UsageCounter);
-                    var counter = (UsageCounter)Activator.CreateInstance(t);
-                    MethodInfo createStat = counter.GetType().GetMethods(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(x => x.Name == "CreateStat");
-
+              
                     //getting the result string via standard method
                     stopwatch.Start();
                     result = (string)createStat.Invoke(counter, arg);
