@@ -24,12 +24,10 @@ namespace ConsoleApp1
         }
         static void Main()
         {
-            Stopwatch stopwatch = new Stopwatch();
 
             string inPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\test.txt";
             string outPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\stat2.txt";
             string fileData = "";
-            string result = "";
 
 
             /*-------------------------WEB SERVICE PART-------------------------*/
@@ -45,7 +43,7 @@ namespace ConsoleApp1
             resultDict = client.GetData(IOUtils.ReadFile(inPath));
 
             //3.
-            result = CreateContent(resultDict);
+            string result = CreateContent(resultDict);
             //Console.WriteLine(result);
             //4.
             IOUtils.WriteFile(result, outPath);
