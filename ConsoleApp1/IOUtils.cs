@@ -16,7 +16,7 @@ namespace ConsoleApp1
                 byte[] byteArray = new byte[stream.Length];
                 stream.Read(byteArray, 0, byteArray.Length);
                 string text = System.Text.Encoding.Default.GetString(byteArray);
-                //Console.WriteLine("File reading succeed.");
+                Console.WriteLine("File reading succeed.");
                 return text;
             }
             catch (Exception e) { Console.WriteLine(e.Message); return ""; }
@@ -24,13 +24,16 @@ namespace ConsoleApp1
 
         public static void WriteFile(string result, string path)
         {
-            Console.WriteLine(result);
+            //Console.WriteLine(result);
             try
             {
-                FileStream outStream = File.Open(path, FileMode.Create);
-                byte[] byteArray = Encoding.Default.GetBytes(result);
-                outStream.Write(byteArray, 0, byteArray.Length);
-                Console.WriteLine("File writing succeed.");
+                using (FileStream outStream = File.Open(path, FileMode.Create))
+                {
+                    byte[] byteArray = Encoding.Default.GetBytes(result);
+                    outStream.Write(byteArray, 0, byteArray.Length);
+                    Console.WriteLine("File writing succeed.");
+                }
+                
             }
             catch (Exception e) { Console.WriteLine(e.Message); }
         }

@@ -13,7 +13,7 @@ namespace ConsoleApp1
         {
             Stopwatch stopwatch = new Stopwatch();
 
-            string inPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\book.txt";
+            string inPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\test.txt";
             string outPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\stat2.txt";
             string fileData = "";
             string result = "";
@@ -28,7 +28,7 @@ namespace ConsoleApp1
             var client = new ServiceReference1.Service1Client();
             
             //3.
-            result = client.GetData(Console.ReadLine());
+            result = client.GetData(IOUtils.ReadFile(inPath));
             //Console.WriteLine(result);
             //4.
             IOUtils.WriteFile(result, outPath);
