@@ -26,8 +26,6 @@ namespace WcfService1
         static int concurrencyLevel = Environment.ProcessorCount * 2;
         static ConcurrentDictionary<string, int> cd = new ConcurrentDictionary<string, int>(concurrencyLevel, initCapacity);
 
-
-
         private string CreateStat(string Text)
         {
             string[] textLines = Regex.Split(Text, Pattern);
@@ -87,28 +85,20 @@ namespace WcfService1
             }
         }
 
-        public string ThreadCreateStat(string Text)
+        public Dictionary<string, int> ThreadCreateStat(string Text)
         {
             string[] textLines = Regex.Split(Text, Pattern);
             cd.Clear();
 
             var res = Parallel.ForEach(textLines, JobForAThread);
 
-            List<string> lstOfLines = new List<string>();
-            int maxLenght = 5 + (from k in cd.Keys orderby k.Length descending select k).FirstOrDefault().Length;
-            var sortedDictByValue = from pair in cd orderby pair.Value descending select pair;
-            foreach (KeyValuePair<string, int> pair in sortedDictByValue)
-            {
-                int spaceLenght = maxLenght - (pair.Key.Length + pair.Value.ToString().Length);
-                lstOfLines.Add(pair.Key + new string(' ', spaceLenght) + pair.Value.ToString());
-            }
-            return string.Join("\n", lstOfLines);
+            return cd.ToDictionary(e => e.Key, e => e.Value);
         }
     }
 
     public class Service1 : IService1
     {
-        public string GetData(string text)
+        public Dictionary<string, int> GetData(string text)
         {
             UsageCounter counter = new UsageCounter();
             return counter.ThreadCreateStat(text);

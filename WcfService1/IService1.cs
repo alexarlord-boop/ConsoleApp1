@@ -14,7 +14,7 @@ namespace WcfService1
     {
 
         [OperationContract]
-        string GetData(string text);
+        Dictionary<string, int> GetData(string text);
 
         [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);
