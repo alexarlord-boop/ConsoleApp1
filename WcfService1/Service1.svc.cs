@@ -65,7 +65,7 @@ namespace WcfService1
     {
         public Dictionary<string, int> GetData(string text)
         {
-            UsageCounter counter = new UsageCounter();
+            ThreadHandler counter = new ThreadHandler();
             return counter.ThreadCreateStat(text);
         }
 
