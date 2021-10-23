@@ -27,8 +27,6 @@ namespace ConsoleApp1
 
             string inPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\test.txt";
             string outPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\stat2.txt";
-            string fileData = "";
-
 
             /*-------------------------WEB SERVICE PART-------------------------*/
             //1. getting text from user <- data file        | CLIENT
@@ -44,11 +42,10 @@ namespace ConsoleApp1
 
             //3.
             string result = CreateContent(resultDict);
-            //Console.WriteLine(result);
+
             //4.
             IOUtils.WriteFile(result, outPath);
 
-            
         }
     }
 }

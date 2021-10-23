@@ -55,10 +55,10 @@ namespace ServiceReference1
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetData", ReplyAction="http://tempuri.org/IService1/GetDataResponse")]
-        string GetData(string text);
+        System.Collections.Generic.Dictionary<string, int> GetData(string text);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetData", ReplyAction="http://tempuri.org/IService1/GetDataResponse")]
-        System.Threading.Tasks.Task<string> GetDataAsync(string text);
+        System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<string, int>> GetDataAsync(string text);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetDataUsingDataContract", ReplyAction="http://tempuri.org/IService1/GetDataUsingDataContractResponse")]
         ServiceReference1.CompositeType GetDataUsingDataContract(ServiceReference1.CompositeType composite);
@@ -117,12 +117,12 @@ namespace ServiceReference1
         {
         }
         
-        public string GetData(string text)
+        public System.Collections.Generic.Dictionary<string, int> GetData(string text)
         {
             return base.Channel.GetData(text);
         }
         
-        public System.Threading.Tasks.Task<string> GetDataAsync(string text)
+        public System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<string, int>> GetDataAsync(string text)
         {
             return base.Channel.GetDataAsync(text);
         }
