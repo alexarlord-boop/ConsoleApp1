@@ -20,7 +20,7 @@ namespace Parser
 
 
 
-        private string CreateStat(string Text)
+        private string RegularCreateStat(string Text)
         {
             string[] textLines = Regex.Split(Text, Pattern);
             string[] lineWords;
