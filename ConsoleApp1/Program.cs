@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Diagnostics;
 
+using Parser;
 
 namespace ConsoleApp1
 {
@@ -28,8 +29,12 @@ namespace ConsoleApp1
             Dictionary<string, int> resultDict;
             resultDict = client.GetData(IOUtils.ReadFile(inPath));
 
-            //3.
-            string result = CreateContent(resultDict);
+            //3. using reflection
+            Type t = typeof(UsageCounter);
+            MethodInfo createContent = t.GetMethod("CreateContent", BindingFlags.NonPublic | BindingFlags.Static);
+            UsageCounter c = (UsageCounter)Activator.CreateInstance(t);
+            Dictionary<string, int>[] paramms = new Dictionary<string, int>[] { resultDict };
+            string result = (string)createContent.Invoke(c, paramms);
 
             //4.
             IOUtils.WriteFile(result, outPath);
