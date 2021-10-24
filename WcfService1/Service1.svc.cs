@@ -13,7 +13,7 @@ namespace WcfService1
         public Dictionary<string, int> GetData(string text)
         {
             ThreadHandler handler = new ThreadHandler();
-            return handler.ThreadCreateStat(text);
+            return handler.ThreadParseText(text);
         }
 
         public CompositeType GetDataUsingDataContract(CompositeType composite)

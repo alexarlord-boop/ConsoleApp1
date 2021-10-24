@@ -43,7 +43,7 @@ namespace WcfService1
             }
         }
 
-        public Dictionary<string, int> ThreadCreateStat(string Text)
+        public Dictionary<string, int> ThreadParseText(string Text)
         {
             string[] textLines = Regex.Split(Text, Pattern);
             cd.Clear();
