@@ -17,11 +17,13 @@ namespace ConsoleApp1
             string inPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\book.txt";
             string outPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\stat2.txt";
 
+
             /*-------------------------WEB SERVICE PART-------------------------*/
             //1. getting text from user <- data file        | CLIENT     |
             //2. parsing text -> dict<string, int>          | SERVICE    | WEB + MULTITHREADING
             //3. creating content string                    | CLIENT     | REFLECTION
             //4. writing file                               | CLIENT     |
+
             
             var client = new ServiceReference2.Service1Client();
 
