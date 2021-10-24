@@ -12,12 +12,14 @@ namespace ConsoleApp1
         {
             try
             {
-                FileStream stream = File.Open(path, FileMode.Open);
-                byte[] byteArray = new byte[stream.Length];
-                stream.Read(byteArray, 0, byteArray.Length);
-                string text = System.Text.Encoding.Default.GetString(byteArray);
-                Console.WriteLine("File reading succeed.");
-                return text;
+                using (FileStream stream = File.Open(path, FileMode.Open))
+                {
+                    byte[] byteArray = new byte[stream.Length];
+                    stream.Read(byteArray, 0, byteArray.Length);
+                    string text = System.Text.Encoding.Default.GetString(byteArray);
+                    Console.WriteLine("File reading succeed.");
+                    return text;
+                }
             }
             catch (Exception e) { Console.WriteLine(e.Message); return ""; }
         }
