@@ -12,8 +12,8 @@ namespace WcfService1
     {
         public Dictionary<string, int> GetData(string text)
         {
-            ThreadHandler counter = new ThreadHandler();
-            return counter.ThreadCreateStat(text);
+            ThreadHandler handler = new ThreadHandler();
+            return handler.ThreadCreateStat(text);
         }
 
         public CompositeType GetDataUsingDataContract(CompositeType composite)
