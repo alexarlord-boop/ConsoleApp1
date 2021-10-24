@@ -21,7 +21,7 @@ namespace ConsoleApp1
                     return text;
                 }
             }
-            catch (Exception e) { Console.WriteLine(e.Message); return ""; }
+            catch (Exception e) { Console.WriteLine(e.Message); return "ERROR"; }
         }
 
         public static void WriteFile(string result, string path)
