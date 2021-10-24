@@ -10,9 +10,6 @@ namespace Content
 {
     public class Generator
     {
-
-
-        /*------------------------WEB SERVICE PART------------------------*/
         private string CreateContent(Dictionary<string, int> rd)
         {
             List<string> lstOfLines = new List<string>();
