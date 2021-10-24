@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Parser
 {
-    public class UsageCounter
+    public class Generator
     {
         private const string Pattern = "[0-9\"\\.. %°“„…:;«»,\\r\\n!?\\-–XVI()]";
         public string result = "";

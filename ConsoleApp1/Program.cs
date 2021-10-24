@@ -30,9 +30,9 @@ namespace ConsoleApp1
             resultDict = client.GetData(IOUtils.ReadFile(inPath));
 
             //3. via reflection
-            Type t = typeof(UsageCounter);
+            Type t = typeof(Generator);
             MethodInfo createContent = t.GetMethod("CreateContent", BindingFlags.NonPublic | BindingFlags.Instance);
-            UsageCounter c = (UsageCounter)Activator.CreateInstance(t);
+            Generator c = (Generator)Activator.CreateInstance(t);
             string result = (string)createContent.Invoke(c, new Dictionary<string, int>[] { resultDict });
 
             //4.
