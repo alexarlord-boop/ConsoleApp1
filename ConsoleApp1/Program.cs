@@ -19,16 +19,15 @@ namespace ConsoleApp1
 
             /*-------------------------WEB SERVICE PART-------------------------*/
             //1. getting text from user <- data file        | CLIENT
-            //2. parsing text -> dict<string, int>          | SERVICE    парсит текст и возвращает словарь
-            //3. getting result                             | CLIENT     из словаря создает строку
+            //2. parsing text -> dict<string, int>          | SERVICE    
+            //3. creating content string                    | CLIENT   
             //4. writing file                               | CLIENT     
             
             var client = new ServiceReference2.Service1Client();
 
             //1-2.
             Dictionary<string, int> resultDict;
-            string fileData = IOUtils.ReadFile(inPath);
-            resultDict = client.GetData(fileData);
+            resultDict = client.GetData(IOUtils.ReadFile(inPath));
 
             //3. using reflection
             Type t = typeof(UsageCounter);
