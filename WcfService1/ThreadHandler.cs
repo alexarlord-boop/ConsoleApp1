@@ -15,8 +15,8 @@ namespace WcfService1
         public string result = "";
         public Dictionary<string, int> _dict = new Dictionary<string, int>();
 
-        static int initCapacity = 400000;
         static int concurrencyLevel = Environment.ProcessorCount * 2;
+        static int initCapacity = 10;
         static ConcurrentDictionary<string, int> cd = new ConcurrentDictionary<string, int>(concurrencyLevel, initCapacity);
 
 
