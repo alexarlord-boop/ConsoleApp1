@@ -29,7 +29,7 @@ namespace ConsoleApp1
             Dictionary<string, int> resultDict;
             resultDict = client.GetData(IOUtils.ReadFile(inPath));
 
-            //3. using reflection
+            //3. via reflection
             Type t = typeof(UsageCounter);
             MethodInfo createContent = t.GetMethod("CreateContent", BindingFlags.NonPublic | BindingFlags.Instance);
             UsageCounter c = (UsageCounter)Activator.CreateInstance(t);
