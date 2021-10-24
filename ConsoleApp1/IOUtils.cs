@@ -26,7 +26,6 @@ namespace ConsoleApp1
 
         public static void WriteFile(string result, string path)
         {
-            //Console.WriteLine(result);
             try
             {
                 using (FileStream outStream = File.Open(path, FileMode.Create))
