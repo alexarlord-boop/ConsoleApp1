@@ -33,8 +33,7 @@ namespace ConsoleApp1
             Type t = typeof(UsageCounter);
             MethodInfo createContent = t.GetMethod("CreateContent", BindingFlags.NonPublic | BindingFlags.Instance);
             UsageCounter c = (UsageCounter)Activator.CreateInstance(t);
-            Dictionary<string, int>[] paramms = new Dictionary<string, int>[] { resultDict };
-            string result = (string)createContent.Invoke(c, paramms);
+            string result = (string)createContent.Invoke(c, new Dictionary<string, int>[] { resultDict });
 
             //4.
             IOUtils.WriteFile(result, outPath);
