@@ -14,7 +14,7 @@ namespace ConsoleApp1
         static void Main()
         {
 
-            string inPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\test.txt";
+            string inPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\book.txt";
             string outPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\stat2.txt";
 
             /*-------------------------WEB SERVICE PART-------------------------*/
@@ -23,7 +23,7 @@ namespace ConsoleApp1
             //3. getting result                             | CLIENT     из словаря создает строку
             //4. writing file                               | CLIENT     
             
-            var client = new ServiceReference1.Service1Client();
+            var client = new ServiceReference2.Service1Client();
 
             //1-2.
             Dictionary<string, int> resultDict;
