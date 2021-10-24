@@ -27,11 +27,12 @@ namespace ConsoleApp1
 
             //1-2.
             Dictionary<string, int> resultDict;
-            resultDict = client.GetData(IOUtils.ReadFile(inPath));
+            string fileData = IOUtils.ReadFile(inPath);
+            resultDict = client.GetData(fileData);
 
             //3. using reflection
             Type t = typeof(UsageCounter);
-            MethodInfo createContent = t.GetMethod("CreateContent", BindingFlags.NonPublic | BindingFlags.Static);
+            MethodInfo createContent = t.GetMethod("CreateContent", BindingFlags.NonPublic | BindingFlags.Instance);
             UsageCounter c = (UsageCounter)Activator.CreateInstance(t);
             Dictionary<string, int>[] paramms = new Dictionary<string, int>[] { resultDict };
             string result = (string)createContent.Invoke(c, paramms);
