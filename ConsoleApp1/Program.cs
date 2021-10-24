@@ -18,10 +18,10 @@ namespace ConsoleApp1
             string outPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\stat2.txt";
 
             /*-------------------------WEB SERVICE PART-------------------------*/
-            //1. getting text from user <- data file        | CLIENT
-            //2. parsing text -> dict<string, int>          | SERVICE    
-            //3. creating content string                    | CLIENT   
-            //4. writing file                               | CLIENT     
+            //1. getting text from user <- data file        | CLIENT     |
+            //2. parsing text -> dict<string, int>          | SERVICE    | WEB + MULTITHREADING
+            //3. creating content string                    | CLIENT     | REFLECTION
+            //4. writing file                               | CLIENT     |
             
             var client = new ServiceReference2.Service1Client();
 
@@ -29,7 +29,7 @@ namespace ConsoleApp1
             Dictionary<string, int> resultDict;
             resultDict = client.GetData(IOUtils.ReadFile(inPath));
 
-            //3. via reflection
+            //3. 
             Type t = typeof(Generator);
             MethodInfo createContent = t.GetMethod("CreateContent", BindingFlags.NonPublic | BindingFlags.Instance);
             Generator c = (Generator)Activator.CreateInstance(t);
