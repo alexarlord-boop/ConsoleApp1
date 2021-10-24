@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ServiceReference2
+namespace ServiceReference1
 {
     using System.Runtime.Serialization;
     
@@ -50,7 +50,7 @@ namespace ServiceReference2
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference2.IService1")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.IService1")]
     public interface IService1
     {
         
@@ -61,20 +61,20 @@ namespace ServiceReference2
         System.Threading.Tasks.Task<System.Collections.Generic.Dictionary<string, int>> GetDataAsync(string text);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetDataUsingDataContract", ReplyAction="http://tempuri.org/IService1/GetDataUsingDataContractResponse")]
-        ServiceReference2.CompositeType GetDataUsingDataContract(ServiceReference2.CompositeType composite);
+        ServiceReference1.CompositeType GetDataUsingDataContract(ServiceReference1.CompositeType composite);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetDataUsingDataContract", ReplyAction="http://tempuri.org/IService1/GetDataUsingDataContractResponse")]
-        System.Threading.Tasks.Task<ServiceReference2.CompositeType> GetDataUsingDataContractAsync(ServiceReference2.CompositeType composite);
+        System.Threading.Tasks.Task<ServiceReference1.CompositeType> GetDataUsingDataContractAsync(ServiceReference1.CompositeType composite);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
-    public interface IService1Channel : ServiceReference2.IService1, System.ServiceModel.IClientChannel
+    public interface IService1Channel : ServiceReference1.IService1, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.2")]
-    public partial class Service1Client : System.ServiceModel.ClientBase<ServiceReference2.IService1>, ServiceReference2.IService1
+    public partial class Service1Client : System.ServiceModel.ClientBase<ServiceReference1.IService1>, ServiceReference1.IService1
     {
         
         /// <summary>
@@ -127,12 +127,12 @@ namespace ServiceReference2
             return base.Channel.GetDataAsync(text);
         }
         
-        public ServiceReference2.CompositeType GetDataUsingDataContract(ServiceReference2.CompositeType composite)
+        public ServiceReference1.CompositeType GetDataUsingDataContract(ServiceReference1.CompositeType composite)
         {
             return base.Channel.GetDataUsingDataContract(composite);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference2.CompositeType> GetDataUsingDataContractAsync(ServiceReference2.CompositeType composite)
+        public System.Threading.Tasks.Task<ServiceReference1.CompositeType> GetDataUsingDataContractAsync(ServiceReference1.CompositeType composite)
         {
             return base.Channel.GetDataUsingDataContractAsync(composite);
         }

@@ -25,7 +25,7 @@ namespace ConsoleApp1
             //4. writing file                               | CLIENT     |
 
             
-            var client = new ServiceReference2.Service1Client();
+            var client = new ServiceReference1.Service1Client();
 
             //1-2.
             Dictionary<string, int> resultDict;

@@ -10,7 +10,7 @@
       "System.Collections.Generic.Dictionary`2"
     ],
     "namespaceMappings": [
-      "*, ServiceReference2"
+      "*, ServiceReference1"
     ],
     "references": [
       "C:\\Users\\Александр\\source\\repos\\ConsoleApp1\\ConsoleApp1\\bin\\Debug\\netcoreapp3.1\\Parser.dll",
