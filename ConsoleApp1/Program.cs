@@ -11,12 +11,28 @@ namespace ConsoleApp1
 {
     class Program
     {
-        static void Main()
+        static void Main(string[] args)
         {
 
             string inPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\book.txt";
             string outPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\stat2.txt";
 
+            if (args.Length == 2)
+            {
+                inPath = args[0];
+                outPath = args[1];
+            }
+            else if (args.Length != 0)
+            {
+                Console.WriteLine("Incorrect arguments.");
+            }
+            else
+            {
+                Console.Write("Input path:  ");
+                inPath = Console.ReadLine();
+                Console.Write("Output path: ");
+                outPath = Console.ReadLine();
+            }
 
             /*-------------------------WEB SERVICE PART-------------------------*/
             //1. getting text from user <- data file        | CLIENT     |
@@ -24,7 +40,7 @@ namespace ConsoleApp1
             //3. creating content string                    | CLIENT     | REFLECTION
             //4. writing file                               | CLIENT     |
 
-            
+
             var client = new ServiceReference1.Service1Client();
 
             //1-2.
