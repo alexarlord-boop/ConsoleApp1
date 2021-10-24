@@ -19,7 +19,22 @@ namespace Parser
         static ConcurrentDictionary<string, int> cd = new ConcurrentDictionary<string, int>(concurrencyLevel, initCapacity);
 
 
+        /*------------------------WEB SERVICE PART------------------------*/
+        private string CreateContent(Dictionary<string, int> rd)
+        {
+            List<string> lstOfLines = new List<string>();
+            int maxLenght = 5 + (from k in rd.Keys orderby k.Length descending select k).FirstOrDefault().Length;
+            var sortedDictByValue = from pair in rd orderby pair.Value descending select pair;
+            foreach (KeyValuePair<string, int> pair in sortedDictByValue)
+            {
+                int spaceLenght = maxLenght - (pair.Key.Length + pair.Value.ToString().Length);
+                lstOfLines.Add(pair.Key + new string(' ', spaceLenght) + pair.Value.ToString());
+            }
+            return string.Join("\n", lstOfLines);
+        }
 
+
+        /*-------------------------THREADING PART-------------------------*/
         private string RegularCreateStat(string Text)
         {
             string[] textLines = Regex.Split(Text, Pattern);
@@ -55,21 +70,6 @@ namespace Parser
             return string.Join("\n", lstOfLines);
 
         }
-        private string CreateContent(Dictionary<string, int> rd)
-        {
-            List<string> lstOfLines = new List<string>();
-            int maxLenght = 5 + (from k in rd.Keys orderby k.Length descending select k).FirstOrDefault().Length;
-            var sortedDictByValue = from pair in rd orderby pair.Value descending select pair;
-            foreach (KeyValuePair<string, int> pair in sortedDictByValue)
-            {
-                int spaceLenght = maxLenght - (pair.Key.Length + pair.Value.ToString().Length);
-                lstOfLines.Add(pair.Key + new string(' ', spaceLenght) + pair.Value.ToString());
-            }
-            return string.Join("\n", lstOfLines);
-        }
-
-
-        /*-------------------------THREADING PART-------------------------*/
 
         public static void JobForAThread(string line)
         {
