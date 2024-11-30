@@ -2,49 +2,20 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Collections.Generic;
 using System.Diagnostics;
 
-using Parser;
-
+using Content;
 
 namespace ConsoleApp1
 {
     class Program
     {
-        public static string ReadFile(string path)
-        {
-            try
-            {
-                FileStream stream = File.Open(path, FileMode.Open);
-                byte[] byteArray = new byte[stream.Length];
-                stream.Read(byteArray, 0, byteArray.Length);
-                string text = System.Text.Encoding.Default.GetString(byteArray);
-                //Console.WriteLine("File reading succeed.");
-                return text;
-            }
-            catch (Exception e) { Console.WriteLine(e.Message); return ""; }
-        }
-
-        public static void WriteFile(string result, string path)
-        {
-            try
-            {
-                FileStream outStream = File.Open(path, FileMode.Create);
-                byte[] byteArray = System.Text.Encoding.Default.GetBytes(result);
-                outStream.Write(byteArray, 0, byteArray.Length);
-                //Console.WriteLine("File writing succeed.");
-            }
-            catch (Exception e) { Console.WriteLine(e.Message); }
-        }
-
         static void Main(string[] args)
         {
-            Stopwatch stopwatch = new Stopwatch();
 
             string inPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\book.txt";
-            string outPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\stat.txt";
-            string fileData = "";
-            string result = "";
+            string outPath = "C:\\Users\\Александр\\OneDrive\\Документы\\testFiles\\stat2.txt";
 
             if (args.Length == 2)
             {
@@ -63,50 +34,28 @@ namespace ConsoleApp1
                 outPath = Console.ReadLine();
             }
 
-            // reading data
-            fileData = ReadFile(inPath);
-            string[] arg = new string[] { fileData };
-            
-            if (fileData.Length == 0)
-            {
-                Console.WriteLine("Incorrect input data.");
-            }
-            else
-            {
-                //creating object
-                var t = typeof(UsageCounter);
-                var counter = (UsageCounter)Activator.CreateInstance(t);
-
-                //getting private method of the instance
-                MethodInfo createStat = counter.GetType().GetMethod("CreateStat", BindingFlags.NonPublic | BindingFlags.Instance);
-
-                Console.WriteLine("Regular   Thread");
-                for (int i = 0; i < 50; i++)
-                {
-                    //getting the result string via standard method
-                    stopwatch.Start();
-                    result = (string)createStat.Invoke(counter, arg);
-                    stopwatch.Stop();
-                    string res1 = stopwatch.ElapsedMilliseconds.ToString();
-                    stopwatch.Reset();
-
-                    //writing data
-                    WriteFile(result, outPath);
+            /*-------------------------WEB SERVICE PART-------------------------*/
+            //1. getting text from user <- data file        | CLIENT     |
+            //2. parsing text -> dict<string, int>          | SERVICE    | WEB + MULTITHREADING
+            //3. creating content string                    | CLIENT     | REFLECTION
+            //4. writing file                               | CLIENT     |
 
 
-                    //getting the result string via FOREACH thread method
-                    stopwatch.Start();
-                    result = counter.ThreadCreateStat(fileData);
-                    stopwatch.Stop();
-                    string res2 = stopwatch.ElapsedMilliseconds.ToString();
-                    stopwatch.Reset();
+            var client = new ServiceReference1.Service1Client();
 
-                    //writing new data
-                    WriteFile(result, outPath);
+            //1-2.
+            Dictionary<string, int> resultDict;
+            resultDict = client.GetData(IOUtils.ReadFile(inPath));
 
-                    Console.WriteLine(res1 + "       " + res2);
-                }
-            }
+            //3. 
+            Type t = typeof(Generator);
+            MethodInfo createContent = t.GetMethod("CreateContent", BindingFlags.NonPublic | BindingFlags.Instance);
+            Generator c = (Generator)Activator.CreateInstance(t);
+            string result = (string)createContent.Invoke(c, new Dictionary<string, int>[] { resultDict });
+
+            //4.
+            IOUtils.WriteFile(result, outPath);
+
         }
     }
 }
